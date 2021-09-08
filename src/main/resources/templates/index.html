@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <title>Jordanov tvar</title>
+
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200;300;400;500;600;700;800;900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="css/jordanStyle.css">
+    <link rel="stylesheet" href="css/jordanStyleMobile.css">
+
+    <link href="pictures/favicon.png" rel="icon" sizes="16x16" type="image/png">
+
+
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <script src="javascript/jquery-3.5.1.min.js"></script>
+    <script src="javascript/serverConnection.js"></script>
+    <script src="javascript/outputInterface/appendFromJavaToHtml.js"></script>
+    <script src="javascript/fraction.js"></script>
+    <script src="javascript/inputJS.js"></script>
+    <script src="javascript/outputInterface/appendSolution.js"></script>
+    <script src="javascript/outputInterface/eigenvaluesAndPolynomial.js"></script>
+    <script src="javascript/outputInterface/eigenvectors.js"></script>
+    <script src="javascript/description/charPolynomialDesc.js"></script>
+    <script src="javascript/description/minPolynomialDesc.js"></script>
+    <script src="javascript/description/eigenvectorsDesc.js"></script>
+    <script src="javascript/description/blockDiagonal.js"></script>
+    <script src="javascript/outputInterface/jordanForm.js"></script>
+    <script src="javascript/description/eigenvaluesDesc.js"></script>
+
+</head>
+<body>
+<header id="main-header">
+    <h1 id="main-header-h1">Jordanov tvar</h1>
+    <div id="math-problem">
+        <div id="enter-side">
+            <div id="enter-header">
+                <div id="check-solution-header" class="part-of-check-solution">
+                    <span>P</span>
+                    <span>J</span>
+                    <span>P<sup>-1</sup></span>
+                </div>
+                <div id="row-col-operators">
+                    <div id="remove-row-col-operator" class="operator" onclick="removeColRow()">
+                        <img class="operator-img" id="remove-row-col" src="pictures/minus_sign.svg" alt="minus"
+                             draggable="false">
+                    </div>
+                    <span id="row-col-count" class="buttons-count-span">4</span>
+                    <div id="add-row-col-operator" class="operator" onclick="addColRow()">
+                        <img class="operator-img" id="add-row-col" src="pictures/plus_sign.svg" alt="plus"
+                             draggable="false">
+                    </div>
+                </div>
+            </div>
+            <div id="enter" class="part-of-math-problem">
+                <div id="enter-matrixB" class="enter-matrices">
+                    <span class="AB-equals">b = </span>
+                    <div id="matrixB-div" class="matrix-style">
+                        <table class="input-check-solution">
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="enter-matrixA" class="enter-matrices fullAdd">
+                    <span class="AB-equals">A = </span>
+                    <div id="matrixA-div" class="matrix-style">
+                        <table class="input-check-solution">
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="enter-check-solution" class="part-of-check-solution">
+                <div id="enter-matrixP" class="enter-matrices fullAdd">
+                    <div id="matrixP-div" class="matrix-style">
+                        <table class="input-check-solution">
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="enter-matrixJ" class="enter-matrices fullAdd">
+                    <div id="matrixJ-div" class="matrix-style">
+                        <table class="input-check-solution">
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="enter-matrixP1" class="enter-matrices fullAdd">
+                    <div id="matrixP1-div" class="matrix-style">
+                        <table class="input-check-solution">
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="0" onkeydown="setInputOldValue(this)"
+                                           oninput="changeConstant(this)"
+                                           pattern="^-$|^$|^-?([1-9]([0-9]+)?(\/([1-9][0-9]*)?)?|([0]|[1-9]([0-9]+)?)(\.[0-9]*?)?)$">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="enter-footer">
+                <div id="add-matrixB" class="part-of-math-problem">
+                    <label id="matrixB-check-label" for="matrixB-check">vektor b</label>
+                    <input type="checkbox" id="matrixB-check" name="matrixB-check" onchange="showMatrixB(this)">
+                    <label id="own-check" for="matrixB-check"></label>
+                </div>
+                <div id="switch-input-button" onclick="changeView(this)">
+                    Overiť výsledok
+                </div>
+                <div id="solve-inverse-button" class="part-of-check-solution" onclick="calculateInverse()">
+                    vypočítať P<sup>-1</sup>
+                </div>
+            </div>
+        </div>
+        <span id="equals">=</span>
+        <div id="solution-side">
+            <div id="waiting-solution">
+                <p id="waiting-text">Najprv zadajte príklad</p>
+                <lottie-player src="https://assets6.lottiefiles.com/packages/lf20_8uymq2ak.json" id="lottie-dots"
+                               background="transparent" speed="1" style="width: 100px; height: 100px;" loop
+                               autoplay></lottie-player>
+                <hr>
+                <div id="error-message">
+
+                </div>
+
+
+            </div>
+            <div id="solution-side-div" class="part-of-solution">
+                <div id="solution-header" class="part-of-math-problem">
+                    <span>P</span>
+                    <span>J</span>
+                    <span>P<sup>-1</sup></span>
+                </div>
+                <div id="matrix-solution" class="solution-matrix-style solution">
+
+                </div>
+                <div id="solution-footer">
+                    <span id="diagonal-span" class="part-of-math-problem">Jednotky</span>
+                    <div id="diagonal-up" class="diagonal-choose part-of-math-problem" onclick="changeDiagonal(this)">
+                        nad<img src="pictures/chevron-up.svg" alt="up">
+                    </div>
+                    <div id="diagonal-down" class="diagonal-choose diagonal-chosen part-of-math-problem"
+                         onclick="changeDiagonal(this)">
+                        pod<img src="pictures/chevron-down.svg" alt="up">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</header>
+<section id="solve-section">
+    <header id="solve-header">
+        <span id="solve-as" class="part-of-math-problem">Výpočet cez</span>
+        <div id="solve-buttons" class="part-of-math-problem">
+            <div id="char-polyn-button" class="solve-button" onclick="solveCharPolynomial()">
+                charakteristický polynóm
+            </div>
+            <div id="min-polyn-button" class="solve-button" onclick="solveMinPolynomial()">
+                minimálny polynóm
+            </div>
+        </div>
+        <div id="single-solve-button" class="part-of-check-solution" onclick="solveCheckSolution()">
+            Vypočítať
+        </div>
+    </header>
+
+    <article class="part-of-solution">
+        <div id="spectral-decomposition">
+            <p>A = PJP<sup>-1</sup></p>
+            <div id="spectral-matrices">
+                <p>P = Matica prechodu</p>
+                <p>J = Jordanova matica</p>
+                <p>P<sup>-1</sup> = Inverzná matica prechodu</p>
+            </div>
+        </div>
+
+        <div class="description-button" onclick="showDescription(this.parentElement)">
+            VIAC
+            <img class="description-down" src="pictures/chevron-down.svg" width="25" height="25" alt="down">
+            <img class="description-up" src="pictures/chevron-up.svg" width="25" height="25" alt="up">
+
+        </div>
+
+        <div class="description solution" id="linear-operator">
+
+        </div>
+    </article>
+
+    <article class="part-of-solution">
+        <header>
+            <h2 class="solution-h2">
+                Vlastné čísla a vlastné vektory
+            </h2>
+        </header>
+        <div id="eval-evec-part">
+            <p>Ax = λx</p>
+            <div id="evla-evec-values">
+                <p>A = Matica lineárneho operátora</p>
+                <p>λ = Vlastné číslo</p>
+                <p>x = Vlastný vektor</p>
+            </div>
+        </div>
+
+        <div class="description-button" onclick="showDescription(this.parentElement)">
+            VIAC
+            <img class="description-down" src="pictures/chevron-down.svg" width="25" height="25" alt="down">
+            <img class="description-up" src="pictures/chevron-up.svg" width="25" height="25" alt="up">
+
+        </div>
+        <div class="description solution" id="eval-evec-description">
+
+        </div>
+    </article>
+
+
+    <article class="part-of-solution">
+        <header>
+            <h2 class="solution-h2">
+                Vlastné čísla
+            </h2>
+        </header>
+        <div id="minimal-matrices solution"></div>
+        <div id="eigenvalues">
+            <div id="eigenvalues-left" class="solution"></div>
+            <div id="eigenvalues-right" class="solution"></div>
+            <div id="eigenvalues-almost-end" class="solution"></div>
+            <div id="eigenvalues-end" class="solution"></div>
+        </div>
+        <div class="description-button" onclick="showDescription(this.parentElement)">
+            VIAC
+            <img class="description-down" src="pictures/chevron-down.svg" width="25" height="25" alt="down">
+            <img class="description-up" src="pictures/chevron-up.svg" width="25" height="25" alt="up">
+
+        </div>
+        <div class="description solution" id="description-eval">
+        </div>
+    </article>
+    <article id="article-vector-1" class="part-of-solution article-vector">
+        <header class="header-vector">
+            <h2 class="solution-h2">
+                Vlastné vektory
+            </h2>
+            <div class="eigenvalue-mark">
+                <span class="before-value">λ = </span>
+                <span id="eigenvalue-1"></span>
+            </div>
+        </header>
+        <div id="eigenvectors-1" class="solution">
+
+        </div>
+        <div class="description-button" onclick="showDescription(this.parentElement)">
+            VIAC
+            <img class="description-down" src="pictures/chevron-down.svg" width="25" height="25" alt="down">
+            <img class="description-up" src="pictures/chevron-up.svg" width="25" height="25" alt="up">
+
+        </div>
+        <div id="description-evec-1" class="description solution">
+
+        </div>
+        <div id="generalize-evec-1" class="generalize solution"></div>
+
+    </article>
+    <article id="article-vector-2" class="part-of-solution article-vector">
+        <header class="header-vector">
+            <h2 class="solution-h2">
+                Vlastné vektory
+            </h2>
+            <div class="eigenvalue-mark">
+                <span class="before-value">λ = </span>
+                <span id="eigenvalue-2"></span>
+            </div>
+        </header>
+        <div id="eigenvectors-2" class="solution">
+
+        </div>
+        <div class="description-button" onclick="showDescription(this.parentElement)">
+            VIAC
+            <img class="description-down" src="pictures/chevron-down.svg" width="25" height="25" alt="down">
+            <img class="description-up" src="pictures/chevron-up.svg" width="25" height="25" alt="up">
+
+        </div>
+        <div id="description-evec-2" class="description solution">
+
+        </div>
+        <div id="generalize-evec-2" class="generalize solution"></div>
+
+    </article>
+    <article id="article-vector-3" class="part-of-solution article-vector">
+        <header class="header-vector">
+            <h2 class="solution-h2">
+                Vlastné vektory
+            </h2>
+            <div class="eigenvalue-mark">
+                <span class="before-value">λ = </span>
+                <span id="eigenvalue-3"></span>
+            </div>
+        </header>
+        <div id="eigenvectors-3" class="solution">
+
+        </div>
+        <div class="description-button" onclick="showDescription(this.parentElement)">
+            VIAC
+            <img class="description-down" src="pictures/chevron-down.svg" width="25" height="25" alt="down">
+            <img class="description-up" src="pictures/chevron-up.svg" width="25" height="25" alt="up">
+
+        </div>
+        <div id="description-evec-3" class="description solution">
+
+        </div>
+        <div id="generalize-evec-3" class="generalize solution"></div>
+
+    </article>
+    <article id="article-vector-4" class="part-of-solution article-vector">
+        <header class="header-vector">
+            <h2 class="solution-h2">
+                Vlastné vektory
+            </h2>
+            <div class="eigenvalue-mark">
+                <span class="before-value">λ = </span>
+                <span id="eigenvalue-4"></span>
+            </div>
+        </header>
+        <div id="eigenvectors-4" class="solution">
+
+        </div>
+        <div class="description-button" onclick="showDescription(this.parentElement)">
+            VIAC
+            <img class="description-down" src="pictures/chevron-down.svg" width="25" height="25" alt="down">
+            <img class="description-up" src="pictures/chevron-up.svg" width="25" height="25" alt="up">
+
+        </div>
+        <div id="description-evec-4" class="description solution">
+
+        </div>
+        <div id="generalize-evec-4" class="generalize solution"></div>
+
+    </article>
+    <article id="article-vector-5" class="part-of-solution article-vector">
+        <header class="header-vector">
+            <h2 class="solution-h2">
+                Vlastné vektory
+            </h2>
+            <div class="eigenvalue-mark">
+                <span class="before-value">λ = </span>
+                <span id="eigenvalue-5"></span>
+            </div>
+        </header>
+        <div id="eigenvectors-5" class="solution">
+
+        </div>
+        <div class="description-button" onclick="showDescription(this.parentElement)">
+            VIAC
+            <img class="description-down" src="pictures/chevron-down.svg" width="25" height="25" alt="down">
+            <img class="description-up" src="pictures/chevron-up.svg" width="25" height="25" alt="up">
+
+        </div>
+        <div id="description-evec-5" class="description solution">
+
+        </div>
+        <div id="generalize-evec-5" class="generalize solution"></div>
+    </article>
+
+    <article class="part-of-solution" id="last-article">
+        <header class="header-vector">
+            <h2 class="solution-h2">
+                Jordanova matica J a matica prechodu P
+            </h2>
+        </header>
+
+        <div id="jordan-matrix" class="solution">
+
+        </div>
+        <div class="description-button" onclick="showDescription(this.parentElement)">
+            VIAC
+            <img class="description-down" src="pictures/chevron-down.svg" width="25" height="25" alt="down">
+            <img class="description-up" src="pictures/chevron-up.svg" width="25" height="25" alt="up">
+
+        </div>
+        <div id="description-jordan-matrix" class="description solution">
+
+        </div>
+    </article>
+</section>
+<footer id="main-footer">
+    <span>Didaktická aplikácia na výpočet Jordanovho tvaru štvorcovej matice | &copy; Katarína Stasová</span>
+</footer>
+</body>
+</html>

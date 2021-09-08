@@ -1,0 +1,13 @@
+@media (max-width: 768px) {
+    #math-problem {
+        flex-direction: column;
+    }
+
+    #enter-side {
+        width: 90% !important;
+    }
+
+    #solution-side {
+        width: 90% !important;
+    }
+}
